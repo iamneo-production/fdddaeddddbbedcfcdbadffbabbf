@@ -1,75 +1,64 @@
-import './Stopwatch.css'
-import React, { useState, useRef } from "react";
+import { useState, useRef, React } from "react";
+import '/home/coder/project/workspace/reactapp/src/App.css';
 
-const Stopwatch =() =>{
-    const [time, setTime] = useState(0);
+
+export default function Stopwatch(props){
+
+
+    const [time, setTime] = useState(0)
     const [isActive, setIsActive] = useState(false)
-    const [isPaused, setIsPaused] = useState(true)
-    const [isDisabled, setIsDisabled] = useState(true)
+    const [isPaused, setIsPaused] = useState(false)
     const increment = useRef(null)
-    let getSeconds,minutes , getMinutes , getHours;
-    const handleIncrement = () =>{
+
+
+    const handleStart = () => {
         setIsActive(true);
         setIsPaused(false);
-        setIsDisabled(false);
 
-        //let t;
-        increment.current = setInterval( () =>{
-            setTime((time)=>time+1)},1000);
-    }  
-    const handleReset = () =>{
-        setIsActive(false)
-        setIsPaused(true)
-        setIsDisabled(true);
-        clearInterval(increment.current);
-        setTime(0);
-        
-        
-    }
-    const handlePause = () =>{
-        setIsPaused(true);
-       
-        clearInterval(increment.current);
-    }
-    const handleResume = () =>{
-        setIsPaused(false);
-        //let t;
-        increment.current = setInterval( () =>{
-            setTime((time)=>time+1)},1000);
-    }
-    
-        
-         getSeconds = `0${(time % 60)}`.slice(-2)
-         minutes = `${Math.floor(time / 60)}`
-         getMinutes = `0${minutes % 60}`.slice(-2)
-         getHours = `0${Math.floor(time / 3600)}`.slice(-2)
-      
-        
-    
-   return(
-    <div className="cont">
-            <div className="container">
-                <h4> React Stopwatch</h4>
-                <h4>{getHours}:{getMinutes}:{getSeconds}</h4>
-                {
-                    (!isActive && isPaused)?
-                    <button  onClick= {handleIncrement} data-testid="start"> START</button> :
-                    (
-                        !isPaused ?<button  onClick={handlePause} data-testid="pause"> PAUSE</button>:
-                        <button  onClick={handleResume} data-testid="resume"> RESUME</button>
+        increment.current = setInterval(() => {
+          setTime((time) => time + 1000)}, 1000)
+    };
 
-                    )
-                   
-                }
-                 <button  onClick={handleReset} disabled = {isDisabled} data-testid="reset"> RESET</button>
-            </div>
+
+    const handlePause = () => {
+      clearInterval(increment.current)
+      setIsPaused(!isPaused);
+    };
+
+    const handleResume = () => {
+      setIsPaused(!isPaused);
+      increment.current = setInterval(() => {
+        setTime((time) => time + 1000)}, 1000)
+    };
+  
+    const handleReset = () => {
+     clearInterval(increment.current)
+      setIsActive(false)
+      setIsPaused(false)
+      setTime(0)
+    };
+
+    return(
+        <section id='stopwatch'>
+            <div className='inner' >
+            <h1> React Stopwatch </h1>
+
+            <p id='time' data-testid='time'>{`0${Math.floor(time % 360000)}`.slice(-2)} : {`0${Math.floor(time/60000) % 60}`.slice(-2)} : {`0${Math.floor(time/1000) % 60}`.slice(-2)} </p>
+
+            <div className='buttons'>
+            
+            {
+            !isActive && !isPaused?
+              <button onClick={handleStart} data-testid='start'>Start</button>
+              : (
+                !isPaused ? <button data-testid='pause' onClick={handlePause}>Pause</button> :  <button data-testid='resume' onClick={handleResume}>Resume</button>
+              )
+            }
+
+          <button id='reset' data-testid='reset' onClick={handleReset} disabled={!isActive}>Reset</button>
         </div>
-   ) 
+        </div>
+
+        </section>
+    )
 }
-
-export default Stopwatch;
-
-
-                
-                
-                
