@@ -1,4 +1,4 @@
-import Stopwatch from <Sto</Stopwatc>
+import './Stopwatch.css'
 import React, { useState, useRef } from "react";
 
 const Stopwatch =() =>{
