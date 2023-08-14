@@ -77,5 +77,4 @@ const Stopwatch=()=>{
     )
 }
 
-export default Stopwatch;
-
+export default Stopwatch;
